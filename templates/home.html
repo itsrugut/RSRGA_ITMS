@@ -1,0 +1,355 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Campus - Tree Management System</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <!-- Load Font Awesome for the tree logo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS */
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #f0fdf4, #ffffff);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .from-green-50 {
+            --tw-gradient-from: #f0fdf4;
+            background-image: linear-gradient(to bottom, var(--tw-gradient-from), #ffffff);
+        }
+
+        .text-green-600 {
+            color: #059669;
+        }
+
+        .bg-green-600 {
+            background-color: #059669;
+        }
+
+        .hover\:bg-green-700:hover {
+            background-color: #047857;
+        }
+
+        .border-green-600 {
+            border-color: #059669;
+        }
+
+        .hover\:bg-green-50:hover {
+            background-color: #f0fdf4;
+        }
+
+        .hover\:text-green-600:hover {
+            color: #059669;
+        }
+        
+        /* Custom class for the tree icon to make it larger */
+        .tree-logo {
+            font-size: 2rem; /* Adjust size as needed */
+            color: #059669;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* For the footer tree icon */
+        .tree-logo-footer {
+            font-size: 1.5rem;
+            color: white;
+            width: 1.75rem;
+            height: 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-sm">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <!-- Updated tree logo with Font Awesome -->
+                    <div class="tree-logo">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-800">Green Campus</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#features" class="text-gray-600 hover:text-green-600 transition">Features</a>
+                    <a href="#benefits" class="text-gray-600 hover:text-green-600 transition">Benefits</a>
+                    <a href="#contact" class="text-gray-600 hover:text-green-600 transition">Contact</a>
+                </div>
+                <a href = {% url 'map_view' %}>
+                    <button class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                        Get Started
+                    </button>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="container mx-auto px-6 py-16 md:py-24">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    Manage Your Trees with Precision and Care
+                </h1>
+                <p class="text-lg text-gray-600 mb-8">
+                    A comprehensive solution for tracking, monitoring, and maintaining your tree inventory with advanced features and real-time insights.
+                </p>
+                <div class="flex space-x-4">
+                    <a href = {% url 'map_view' %}>
+                        <button class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition">
+                            Get Started
+                        </button>
+                    </a>
+                    <button class="border-2 border-green-600 text-green-600 px-8 py-3 rounded-lg hover:bg-green-50 transition">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <img 
+                    src="{% static 'images/tree.png' %}" 
+                    alt="Tree Management" 
+                    class="max-w-full h-full object-contain rounded-2xl transform transition duration-500 group-hover:scale-105"
+                />
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="bg-white py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+                Powerful Features for Tree Management
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition feature-card">
+                    <div class="mb-4 text-green-600">
+                        <i class="fas fa-map text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Interactive Mapping</h3>
+                    <p class="text-gray-600">Visualize your entire tree inventory on interactive maps with detailed location tracking.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition feature-card">
+                    <div class="mb-4 text-green-600">
+                        <i class="fas fa-chart-line text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Data Analytics</h3>
+                    <p class="text-gray-600">Get insights into tree health, growth patterns, and maintenance needs.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition feature-card">
+                    <div class="mb-4 text-green-600">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Health Monitoring</h3>
+                    <p class="text-gray-600">Track tree health status and receive alerts for maintenance requirements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-16 bg-green-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+                Why Choose Green Campus?
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2">95%</div>
+                    <p class="text-gray-600">Accuracy in tree health assessment</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2">50%</div>
+                    <p class="text-gray-600">Reduction in maintenance costs</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2">24/7</div>
+                    <p class="text-gray-600">Real-time monitoring and alerts</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2">100+</div>
+                    <p class="text-gray-600">Organizations trust our solution</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16">
+        <div class="container mx-auto px-6">
+            <div class="max-w-lg mx-auto text-center">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">
+                    Ready to Get Started?
+                </h2>
+                <p class="text-gray-600 mb-8">
+                    Contact us today to learn how Green Campus can help you manage your tree inventory more effectively.
+                </p>
+                <button id="contactBtn" class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition">
+                    Contact Us
+                </button>
+                
+                <!-- Contact Form (Hidden by default) -->
+                <div id="contactForm" class="mt-8 hidden">
+                    <form class="bg-white shadow-lg rounded-lg p-6 text-left">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+                                Name
+                            </label>
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Your Name">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                                Email
+                            </label>
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Your Email">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="message">
+                                Message
+                            </label>
+                            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="message" rows="4" placeholder="How can we help?"></textarea>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline" type="button">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <!-- Footer logo -->
+                        <div class="tree-logo-footer">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <span class="text-lg font-bold">Green Campus</span>
+                    </div>
+                    <p class="text-gray-400">
+                        Advanced tree management solution for modern organizations.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Product</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Features</a></li>
+                        <li><a href="#" class="hover:text-white transition">Documentation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">About</a></li>
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terms</a></li>
+                        <li><a href="#" class="hover:text-white transition">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Green Campus. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Button (Only visible on mobile) -->
+    <div class="fixed bottom-4 right-4 md:hidden">
+        <button id="mobileMenuBtn" class="bg-green-600 text-white p-3 rounded-full shadow-lg">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div id="mobileMenu" class="hidden absolute bottom-16 right-0 bg-white rounded-lg shadow-xl w-48">
+            <div class="py-2">
+                <a href="#features" class="block px-4 py-2 text-gray-800 hover:bg-green-100">Features</a>
+                <a href="#benefits" class="block px-4 py-2 text-gray-800 hover:bg-green-100">Benefits</a>
+                <a href="#contact" class="block px-4 py-2 text-gray-800 hover:bg-green-100">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!mobileMenuBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
+            // Contact Form Toggle
+            const contactBtn = document.getElementById('contactBtn');
+            const contactForm = document.getElementById('contactForm');
+            
+            contactBtn.addEventListener('click', function() {
+                contactForm.classList.toggle('hidden');
+                if (!contactForm.classList.contains('hidden')) {
+                    contactForm.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+            
+            // Smooth Scrolling for Anchor Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId !== '#') {
+                        document.querySelector(targetId).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                    
+                    // Close mobile menu after clicking a link
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

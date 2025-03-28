@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Interactive Map{% endblock %}
+{% block navbar_title %}DeKUT Arboretum{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/map.css' %}">
+{% endblock %}
+
+{% block searchbar %}
+    {% include 'includes/searchbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="flex h-[calc(100vh-8rem)]">
+        <!-- Map Container -->
+        <div class="flex-grow">
+            <div id="map" class="w-full h-full"></div>
+        </div>
+        
+        {% include 'map/partials/sidebar.html' %}
+    </div>
+    
+    {% include 'map/partials/add_tree_button.html' %}
+{% endblock %}
+
+{% block extra_modal %}
+    {% include 'map/partials/add_tree_modal.html' %}
+{% endblock %}
+
+{% block extra_js %}
+    <script id="user-is-admin" type="application/json">
+        {{ user.is_staff|yesno:"true,false" }}
+    </script>
+    <script>
+        var treeIconUrl = "{% static 'img/icon.png' %}";
+        var holeIconUrl = "{% static 'img/Hole.png' %}";
+    </script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="{% static 'js/map.js' %}"></script>
+{% endblock %}

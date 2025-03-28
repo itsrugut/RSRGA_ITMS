@@ -1,0 +1,26 @@
+<!-- Pagination -->
+{% if images.has_other_pages %}
+    <div class="mt-8 flex justify-center">
+        <nav class="inline-flex rounded-md shadow">
+            {% if images.has_previous %}
+                <a href="?page={{ images.previous_page_number }}" class="px-3 py-2 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100">&laquo; Previous</a>
+            {% else %}
+                <span class="px-3 py-2 bg-gray-100 border border-gray-300 rounded-l-md text-gray-400">&laquo; Previous</span>
+            {% endif %}
+            
+            {% for i in images.paginator.page_range %}
+                {% if images.number == i %}
+                    <span class="px-3 py-2 bg-green-700 text-white border border-green-700">{{ i }}</span>
+                {% else %}
+                    <a href="?page={{ i }}" class="px-3 py-2 bg-white border border-gray-300 hover:bg-gray-100">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if images.has_next %}
+                <a href="?page={{ images.next_page_number }}" class="px-3 py-2 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100">Next &raquo;</a>
+            {% else %}
+                <span class="px-3 py-2 bg-gray-100 border border-gray-300 rounded-r-md text-gray-400">Next &raquo;</span>
+            {% endif %}
+        </nav>
+    </div>
+{% endif %}

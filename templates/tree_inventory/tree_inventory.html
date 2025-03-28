@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Tree Inventory{% endblock %}
+{% block navbar_title %}DeKUT Arboretum{% endblock %}
+
+{% block content %}
+    {% include 'tree_inventory/partials/filters.html' %}
+    
+    {% include 'tree_inventory/partials/csv_manipulation.html' %}
+    
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="overflow-x-auto">
+            <table id="tree-table" class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tree ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Point Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Common Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Planted</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Planter</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for tree in trees %}
+                        <tr class="hover:bg-gray-50">
+                            <!-- Tree ID -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ tree.treeid }}</td>
+                        
+                            <!-- Point Name -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ tree.pointname|default:"N/A" }}</td>
+                        
+                            <!-- Common Name -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ tree.treetype.commonname|default:"N/A" }}</td>
+                
+                            <!-- Location Coordinates with Latitude and Longitude checks -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                Lat: {{ tree.location.y|default:"N/A" }}, Long: {{ tree.location.x|default:"N/A" }}
+                            </td>
+                
+                            <!-- Status with conditional background colors based on tree status -->
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    {% if tree.status.statusname == 'Healthy' %}
+                                        bg-green-200 text-green-800
+                                    {% elif tree.status.statusname == 'Newly Planted' %}
+                                        bg-green-100 text-green-800
+                                    {% elif tree.status.statusname == 'Dried' %}
+                                        bg-red-200 text-green-800
+                                    {% else %}
+                                        bg-red-0 text-green-800
+                                    {% endif %}">
+                                    {{ tree.status.statusname|default:"No Status" }}
+                                </span>
+                            </td>
+
+                
+                            <!-- Date Planted -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ tree.dateplanted|date:"Y-m-d" }}
+                            </td>
+                
+                            <!-- Planter's Name (displaying 'Unknown' if no planter data) -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ tree.planterid.firstname|default:"Unknown" }} {{ tree.planterid.lastname|default:"" }}
+                            </td>
+                
+                            <!-- Actions with link to tree details -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="{% url 'tree_details' tree.treeid %}" class="text-green-600 hover:text-green-900">View Details</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <!-- Message if no trees match the filters -->
+                        <tr>
+                            <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">No trees found matching the selected filters.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('tree-table');
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+    
+            // Sort the rows by Tree ID
+            rows.sort((rowA, rowB) => {
+                const treeIdA = parseInt(rowA.cells[0].textContent.trim()); // Tree ID is in the first cell
+                const treeIdB = parseInt(rowB.cells[0].textContent.trim());
+                return treeIdA - treeIdB; // Sort in ascending order
+            });
+    
+            // Append sorted rows to the table
+            const tbody = table.querySelector('tbody');
+            rows.forEach(row => tbody.appendChild(row));
+        });
+    </script>
+{% endblock %}

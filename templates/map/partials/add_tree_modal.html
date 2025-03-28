@@ -1,0 +1,126 @@
+<!-- Add Tree Modal (Moved outside main content) -->
+{% if user.is_authenticated %}
+    <div id="add-tree-form" class="modal-overlay">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md m-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Add New Tree</h2>
+                <button id="close-form-btn" class="text-gray-500 hover:text-gray-700" aria-label="Close form">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="new-tree-form" class="space-y-4">
+                {% csrf_token %}
+                <!-- Form fields remain the same -->
+                <div>
+                    <label for="treetype" class="block text-sm font-medium text-gray-700">Tree Type:</label>
+                    <select id="treetype" name="treetype" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                        {% for tree_type in tree_types %}
+                            <option value="{{ tree_type.typeid }}">{{ tree_type.commmonname }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            
+                <div>
+                    <label for="pointname" class="block text-sm font-medium text-gray-700">Point Name:</label>
+                    <input type="text" id="pointname" name="pointname" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="latitude" class="block text-sm font-medium text-gray-700">Latitude:</label>
+                        <input type="number" id="latitude" name="latitude" step="any" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                    </div>
+
+                    <div>
+                        <label for="longitude" class="block text-sm font-medium text-gray-700">Longitude:</label>
+                        <input type="number" id="longitude" name="longitude" step="any" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
+                    <select id="status" name="status" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                        {% for status in tree_statuses %}
+                            <option value="{{ status.statusid }}">{{ status.statusname }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="dateplanted" class="block text-sm font-medium text-gray-700">Planted Date:</label>
+                    <input type="date" id="dateplanted" name="dateplanted" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                </div>
+
+                <div>
+                    <label for="planterid" class="block text-sm font-medium text-gray-700">Planter:</label>
+                    <select id="planterid" name="planterid" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                        {% for planter in planters %}
+                            <option value="{{ planter.planterid }}">
+                                {% if planter.firstname and planter.lastname %}
+                                    {{ planter.firstname }} {{ planter.lastname }}
+                                {% elif planter.firstname %}
+                                    {{ planter.firstname }}
+                                {% elif planter.lastname %}
+                                    {{ planter.lastname }}
+                                {% else %}
+                                    Unknown
+                                {% endif %}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+    
+                <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition">
+                    Add Tree
+                </button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+<script>
+    // Modal functionality with admin check
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('add-tree-form');
+        const openBtn = document.getElementById('toggle-form-btn');
+        const closeBtn = document.getElementById('close-form-btn');
+
+        // Replace this with actual server-provided admin check
+        const isAdmin = JSON.parse(document.getElementById('user-is-admin').textContent);
+
+        // Debug log
+        console.log('Is Admin:', isAdmin);
+
+        if (openBtn && modal && closeBtn) {
+            // Replace the existing click event listener
+            openBtn.onclick = function(event) {
+                console.log('Button clicked, isAdmin:', isAdmin); // Additional debug log
+
+                if (!isAdmin) {
+                    // Prevent any further action if not an admin
+                    event.preventDefault();
+                    event.stopPropagation();
+                    alert('You do not have Administrator privileges to add a tree.');
+                    return false;
+                }
+
+                // If admin, proceed with opening the modal
+                modal.classList.add('active');
+            };
+
+            closeBtn.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        }
+    });
+</script>

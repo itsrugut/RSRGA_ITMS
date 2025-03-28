@@ -1,0 +1,50 @@
+<!-- Tree Information Sidebar -->
+{% if user.is_authenticated %}
+    <div id="tree-info" class="w-80 bg-white shadow-lg">
+        <div class="p-6">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Tree Information</h2>
+            <table class="w-full">
+                <tr class="border-b">
+                    <th class="py-2 text-left text-gray-600">Point Name:</th>
+                    <td id="tree-pointname" class="py-2"></td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left text-gray-600">Common Name:</th>
+                    <td id="tree-commonname" class="py-2"></td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left text-gray-600">Scientific Name:</th>
+                    <td id="tree-scientificname" class="py-2"></td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left text-gray-600">Local Name:</th>
+                    <td id="tree-localname" class="py-2"></td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left text-gray-600">Planter:</th>
+                    <td id="tree-planter" class="py-2"></td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left text-gray-600">Affiliation:</th>
+                    <td id="tree-affiliation" class="py-2"></td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-2 text-left text-gray-600">Date Planted:</th>
+                    <td id="tree-dateplanted" class="py-2"></td>
+                </tr>
+                <tr>
+                    <th class="py-2 text-left text-gray-600">Status:</th>
+                    <td id="tree-status" class="py-2"></td>
+                </tr>
+            </table>
+            <!-- View Details Button -->
+            <div class="mt-4 text-right">
+                <a id="view-details-button" 
+                   href="#" 
+                   class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition">
+                   View More Details
+                </a>
+            </div>
+        </div>
+    </div>
+{% endif %}

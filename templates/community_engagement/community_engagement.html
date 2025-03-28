@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Community Engagement{% endblock %}
+{% block navbar_title %}DeKUT Arboretum{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/community_engagement.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Get Involved Section -->
+    <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Get Involved!</h2>
+        <p class="text-gray-600">Join us in our efforts to maintain and expand the DeKUT Arboretum. Your involvement is crucial for the sustainability of our green spaces.</p>
+    </section>
+
+    <!-- Events Section -->
+    <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Upcoming Events</h2>
+        <div class="space-y-4">
+            {% if events %}
+                {% for event in events %}
+                    <div class="border-l-4 border-green-500 pl-4 py-2">
+                        <h3 class="text-lg font-semibold text-gray-800">{{ event.name }}</h3>
+                        <p class="text-gray-600">Date: <span class="font-medium">{{ event.date }}</span></p>
+                        <p class="text-gray-600">{{ event.description }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-gray-600 italic">There are no upcoming events at this time.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Your Planted Trees Section -->
+    <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Your Planted Trees</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tree Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tree Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-700">Oak</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-700">Quercus</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Healthy
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="/tree/1" class="text-green-600 hover:text-green-900">View Details</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-700">Pine</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-700">Pinus</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Needs Attention
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="/tree/2" class="text-green-600 hover:text-green-900">View Details</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Feedback Form Section -->
+    <section class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">We value your feedback!</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="id_name" class="block text-sm font-medium text-gray-700">Your Name (Optional):</label>
+                <input type="text" id="id_name" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+            <div class="mb-4">
+                <label for="id_email" class="block text-sm font-medium text-gray-700">Your Email (Optional):</label>
+                <input type="email" id="id_email" name="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+            <div class="mb-4">
+                <label for="id_message" class="block text-sm font-medium text-gray-700">Your Feedback:</label>
+                <textarea id="id_message" name="message" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"></textarea>
+            </div>
+            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500">
+                Submit Feedback
+            </button>
+        </form>
+    </section>
+{% endblock %}
+
+
+{% block extra_modal %}{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/community_engagement.js' %}"></script>
+{% endblock %}

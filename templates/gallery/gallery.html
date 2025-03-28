@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Gallery{% endblock %}
+{% block navbar_title %}DeKUT Arboretum{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/gallery.css' %}">
+{% endblock %}
+
+{% block breadcrumb_nav %}
+    {% include 'gallery/partials/breadcrumb_nav.html' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'gallery/partials/search&filter.html' %}
+
+    {% include 'gallery/partials/no_result_message.html' %}
+
+    <!-- Gallery Grid -->
+    <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for image in images %}
+            <div class="gallery-card bg-white shadow-lg rounded-lg overflow-hidden" data-category="{{ image.category }}">
+                <div class="image-container">
+                    <a href="{{ image.image.url }}" data-lightbox="gallery" data-title="{{ image.title }}">
+                        <img src="{{ image.image.url }}" alt="{{ image.title }}" class="w-full h-64 object-cover">
+                        <div class="image-overlay">
+                            <span><i class="fas fa-search-plus mr-1"></i> Click to enlarge</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-semibold text-green-800">{{ image.title }}</h3>
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">{{ image.get_category_display }}</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">{{ image.description }}</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-xs text-gray-500">
+                            <i class="fas fa-calendar-alt mr-1"></i> {{ image.date_taken|date:"GS M Y" }}
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="download-btn text-green-700 hover:text-green-900" title="Download image"><i class="fas fa-download"></i></button>
+                            <button class="share-btn text-green-700 hover:text-green-900" title="Share"><i class="fas fa-share-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-span-3 text-center py-10">
+                <p class="text-gray-500">No images available in the gallery yet.</p>
+            </div>
+        {% endfor %}
+    </div>
+    
+    {% include 'gallery/partials/pagination.html' %}
+    
+    {% include 'gallery/partials/back_to_top_button.html' %}
+{% endblock %}
+
+{% block extra_modal %}
+    {% include 'gallery/partials/share_modal.html' %}
+{% endblock %}
+
+{% block extra_js %}
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        $(document).ready(function() {
+          // Mobile menu toggle
+          $('#mobile-menu-button').click(function() {
+            $('#mobile-menu').slideToggle();
+          });
+        
+          // Initialize lightbox
+          lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'albumLabel': "Image %1 of %2"
+          });
+        
+          // Category filter functionality
+          $('.filter-btn').click(function() {
+            $('.filter-btn').removeClass('filter-active');
+            $(this).addClass('filter-active');
+        
+            const category = $(this).data('category');
+            if (category === 'all') {
+              $('.gallery-card').fadeIn();
+            } else {
+              $('.gallery-card').hide();
+              $(`.gallery-card[data-category="${category}"]`).fadeIn();
+            }
+            checkNoResults();
+          });
+        
+          // Search functionality
+          $('#search-input').on('input', function() {
+            const searchTerm = $(this).val().toLowerCase();
+            $('.gallery-card').each(function() {
+              const title = $(this).find('h3').text().toLowerCase();
+              const description = $(this).find('p').text().toLowerCase();
+              if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                $(this).fadeIn();
+              } else {
+                $(this).hide();
+              }
+            });
+            checkNoResults();
+          });
+        
+          function checkNoResults() {
+            if ($('.gallery-card:visible').length === 0) {
+              $('#no-results').show();
+            } else {
+              $('#no-results').hide();
+            }
+          }
+        
+          // View toggle
+          $('#grid-view').click(function() {
+            $(this).removeClass('text-gray-400').addClass('text-green-700');
+            $('#list-view').removeClass('text-green-700').addClass('text-gray-400');
+            $('#gallery-container').removeClass('grid-cols-1').addClass('grid-cols-1 sm:grid-cols-2 lg:grid-cols-3');
+          });
+        
+          $('#list-view').click(function() {
+            $(this).removeClass('text-gray-400').addClass('text-green-700');
+            $('#grid-view').removeClass('text-green-700').addClass('text-gray-400');
+            $('#gallery-container').removeClass('sm:grid-cols-2 lg:grid-cols-3').addClass('grid-cols-1');
+          });
+        
+          // Share button functionality
+          $('.share-btn').click(function() {
+            const imgSrc = $(this).closest('.gallery-card').find('img').attr('src');
+            $('#share-link').val(imgSrc);
+            $('#share-modal').fadeIn();
+          });
+        
+          // Close share modal
+          $('.close-share-modal').click(function() {
+            $('#share-modal').fadeOut();
+          });
+        
+          // Copy link functionality
+          $('#copy-link').click(function() {
+            const shareLink = document.getElementById('share-link');
+            shareLink.select();
+            document.execCommand('copy');
+            const originalText = $(this).html();
+            $(this).html('<i class="fas fa-check"></i>');
+            setTimeout(() => $(this).html(originalText), 2000);
+          });
+        
+          // Download button functionality
+          $('.download-btn').click(function() {
+            const imgSrc = $(this).closest('.gallery-card').find('img').attr('src');
+            const title = $(this).closest('.gallery-card').find('h3').text();
+            const a = document.createElement('a');
+            a.href = imgSrc;
+            a.download = title.replace(/\s+/g, '-').toLowerCase() + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          });
+        
+          // Back to top button
+          $(window).scroll(function() {
+            if ($(this).scrollTop() > 300) {
+              $('#back-to-top').removeClass('opacity-0 invisible').addClass('opacity-100');
+            } else {
+              $('#back-to-top').removeClass('opacity-100').addClass('opacity-0 invisible');
+            }
+          });
+        
+          $('#back-to-top').click(function() {
+            $('html, body').animate({scrollTop: 0}, 500);
+            return false;
+          });
+        
+          // Add animation on scroll
+          function animateOnScroll() {
+            $('.gallery-card').each(function() {
+              const position = $(this).offset().top;
+              const scroll = $(window).scrollTop();
+              const windowHeight = $(window).height();
+              if (scroll + windowHeight > position + 100) {
+                $(this).addClass('fade-in');
+              }
+            });
+          }
+          $(window).scroll(animateOnScroll);
+          animateOnScroll();
+        });
+    </script>
+    <script src="{% static '' %}"></script>
+{% endblock %}

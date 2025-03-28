@@ -1,0 +1,33 @@
+/* Custom styles to ensure modal appears above map */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+}
+
+.modal-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure Leaflet controls appear below the modal */
+.leaflet-control-container {
+    z-index: 1000;
+}
+
+/* Add to your CSS file or inline style */
+#view-details-button {
+    display: inline-block;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+#view-details-button:hover {
+    transform: scale(1.05);
+}

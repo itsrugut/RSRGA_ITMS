@@ -1,0 +1,27 @@
+/* Include all the same custom styles from drone campaigns */
+html, body { height: 100%; scroll-behavior: smooth; }
+body { display: flex; flex-direction: column; }
+main { flex: 1; }
+.gallery-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.gallery-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+.image-container { position: relative; overflow: hidden; }
+.image-container img { transition: transform 0.5s ease; }
+.image-container:hover img { transform: scale(1.05); }
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: white;
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.image-container:hover .image-overlay { opacity: 1; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+.mobile-menu { display: none; }

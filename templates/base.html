@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DeKUT Arboretum{% endblock %}</title>
+
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50">
+  <!-- Navbar -->
+  {% include 'includes/navbar.html' %}
+  
+  <!-- Optional Search Bar for pages that need it -->
+  {% block searchbar %}{% endblock %}
+  
+  <!-- Optional extra code for pages that need it -->
+  {% block breadcrumb_nav %}{% endblock %}
+  
+  <!-- Main Content -->
+  <main class="flex-grow">
+    {% block content %}
+    <!-- Page-specific content goes here -->
+    {% endblock %}
+  </main>
+  
+  {% block extra_modal %}
+      <!-- Any extra modal goes here -->
+  {% endblock %}
+  
+  <!-- Footer -->
+  {% include 'includes/footer.html' %}
+  
+  <!-- Custom Scripts -->
+{#  <script src="{% static 'js/main.js' %}"></script>#}
+  {% block extra_script %}
+      <!-- Any extra js/scripts goes here -->
+  {% endblock %}
+</body>
+</html>

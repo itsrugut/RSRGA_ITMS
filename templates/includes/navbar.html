@@ -1,0 +1,32 @@
+<!-- Header -->
+<header class="bg-green-700 text-white shadow-lg z-10">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+            <h1 class="text-2xl font-bold">
+                {% block navbar_title %}DeKUT Arboretum{% endblock %}
+            </h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'home' %}" class="hover:text-green-200 transition">Home</a></li>
+                        <li><a href="{% url 'map_view' %}" class="hover:text-green-200 transition">Map</a></li>
+                        {% if user.is_authenticated and user.is_staff %}
+                            <li><a href="{% url 'tree_inventory' %}" class="hover:text-green-200 transition">Tree Inventory</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'gallery' %}" class="hover:text-green-200 transition">Gallery</a></li>
+                        <li><a href="{% url 'drone_campaigns' %}" class="hover:text-green-200 transition">Drone Campaigns</a></li>
+                        <li><a href="{% url 'community_engagement' %}" class="hover:text-green-200 transition">Community</a></li>
+                        {% if user.is_authenticated and user.is_staff %}
+                            <li><a href="{% url 'feedback' %}" class="hover:text-green-200 transition">Feedback</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'logout' %}" class="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg transition">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'home' %}" class="hover:text-green-200 transition">Home</a></li>
+                        <li><a href="{% url 'login' %}" class="hover:text-green-200 transition">Login</a></li>
+                        <li><a href="{% url 'register' %}" class="hover:text-green-200 transition">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
